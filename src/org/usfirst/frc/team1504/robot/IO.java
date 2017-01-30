@@ -5,7 +5,6 @@ public class IO
 	private static Latch_Joystick _drive_forward = new Latch_Joystick(Map.DRIVE_CARTESIAN_JOYSTICK);
 	private static Latch_Joystick _drive_rotation = new Latch_Joystick(Map.DRIVE_POLAR_JOYSTICK);
 	private static Latch_Joystick _secondary = new Latch_Joystick(Map.DRIVE_SECONDARY_JOYSTICK);
-
 	
 	public static final long ROBOT_START_TIME = System.currentTimeMillis();
 	
@@ -34,6 +33,16 @@ public class IO
 	public static double drive_wiggle()
 	{
 		return (_drive_rotation.getRawButton(4) ? -1.0 : 0.0) + (_drive_rotation.getRawButton(5) ? 1.0 : 0.0);
+	}
+	
+	public static double winch_input()
+	{
+		return Math.abs(Utils.deadzone(_secondary.getRawAxis(Map.WINCH_AXIS))) * Map.WINCH_DIRECTION_MAGIC_NUMBER;	
+	}
+	
+	public static boolean get_winch_override()
+	{
+		return _secondary.getRawButton(Map.WINCH_OVERRIDE_BUTTON);
 	}
 
 }

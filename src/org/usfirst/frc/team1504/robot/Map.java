@@ -1,6 +1,17 @@
 package org.usfirst.frc.team1504.robot;
 
 public class Map {
+	
+//Students stuff
+	public static final int WINCH_AXIS = 1;
+	public static final int WINCH_LEFT = 20;
+	public static final int WINCH_RIGHT = 21;
+	public static final int BUTTONPORT = 1;
+	public static final int WINCH_OVERRIDE_BUTTON = 11;
+	public static final int WINCH_DIRECTION_MAGIC_NUMBER = 1;
+	public static final double[] WINCH_MOTOR_MAGIC_NUMBERS = {1.0, -1.0};
+	
+	
 /**
  * Utilities
  */
