@@ -23,8 +23,13 @@ public class Winch implements Updatable{
 		_motorR = new CANTalon(Map.WINCH_RIGHT);
 		
 		_ds = DriverStation.getInstance();
+		Update_Semaphore.getInstance().register(this);
 	}
-	@Override
+	private static Winch instance = new Winch();
+	public static Winch getInstance()
+	{
+		return Winch.instance;
+	}
 	public void semaphore_update() {
 		if(!IO.get_winch_override() || _ds.getMatchTime() > 30)
 		{
