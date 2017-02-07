@@ -11,19 +11,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter implements Updatable
 {
-	private CANTalon _shooter;
+	private CANTalon _shooter = new CANTalon(Map.SHOOTER_MOTOR);
 	private CANTalon _conveyor;
 
-	private static final Shooter instance = new Shooter();
+	private static Shooter instance = new Shooter();
 	private static final DriverStation _ds = DriverStation.getInstance();
-	private Thread _task_thread;
+//	private Thread _task_thread;
 	
 	private final int _sensor_status;
 	
 	public Shooter()
 	{
-		_shooter = new CANTalon(Map.SHOOTER_MOTOR);
-		//_conveyor = new CANTalon(Map.CONVEYOR_MOTOR);
+		//_shooter = 
+//		_conveyor = new CANTalon(Map.CONVEYOR_MOTOR);
 
 		_sensor_status = _shooter.isSensorPresent(FeedbackDevice.CtreMagEncoder_Relative) == CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent ? 1 : 0;
 		
@@ -42,12 +42,13 @@ public class Shooter implements Updatable
 		SmartDashboard.putBoolean("Shooter star encoder good", (_sensor_status & 2) != 0);
 		
 		Update_Semaphore.getInstance().register(this);
+		
 		System.out.println("Shooter Initialized");
 	}
 	
 	public static Shooter getInstance()
 	{
-		return Shooter.instance;
+		return instance;
 	}
 
 	private void update_dashboard()
@@ -67,6 +68,7 @@ public class Shooter implements Updatable
 		if(IO.shooter_input())
 		{
 			_shooter.set(1500);
+			System.out.println("shooter update");
 			/*if(Math.abs(_conveyor.getSpeed() - Map.SHOOTER_TARGET_SPEED) <= Map.SHOOTER_SPEED_GOOD_DEADBAND)
 			{
 				_conveyor.set(.75);

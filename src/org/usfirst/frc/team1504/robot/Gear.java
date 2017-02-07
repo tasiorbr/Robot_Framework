@@ -56,6 +56,7 @@ public class Gear implements Updatable{
 	public void semaphore_update()
 	{
 		getInput();
+		System.out.println("gear updating");
 	}
 	
 	public double [] getInput()
