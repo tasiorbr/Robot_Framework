@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive implements Updatable {
 	
-	private static class DriveTask implements Runnable
+	/*private static class DriveTask implements Runnable
 	{
 
         private Drive _d;
@@ -28,11 +28,12 @@ public class Drive implements Updatable {
         {
             _d.fastTask();
         }
-    }
+    }*/
 	
 	private static final Drive instance = new Drive();
+	private Object _test = new Object();
 	
-	private Thread _task_thread;
+	//private Thread _task_thread;
 	private Thread _dump_thread;
 	private volatile boolean _thread_alive = true;
 	
@@ -56,9 +57,9 @@ public class Drive implements Updatable {
     
 	protected Drive()
 	{
-		_task_thread = new Thread(new DriveTask(this), "1504_Drive");
-		_task_thread.setPriority((Thread.NORM_PRIORITY + Thread.MAX_PRIORITY) / 2);
-		_task_thread.start();
+		//_task_thread = new Thread(new DriveTask(this), "1504_Drive");
+		//_task_thread.setPriority((Thread.NORM_PRIORITY + Thread.MAX_PRIORITY) / 2);
+		//_task_thread.start();
 		
 		Update_Semaphore.getInstance().register(this);
 		
@@ -67,6 +68,29 @@ public class Drive implements Updatable {
 		_timer.scheduleAtFixedRate(_osc, 0, 250);
 		
 		System.out.println("Drive Initialized");
+		
+		new Thread(
+				new Runnable()
+				{
+					public void run()
+					{
+						System.out.println("Drive thread starting");
+						//Update_Semaphore semaphore = Update_Semaphore.getInstance();
+						while(true)
+						{
+							try {
+								synchronized (_test)
+								{
+									_test.wait(); // Will wait indefinitely until notified
+								}
+								instance.fastTask();
+							} catch (InterruptedException error) {
+								error.printStackTrace();
+							}
+						}
+					}
+				}
+		).start();
 	}
 	
 	public void release()
